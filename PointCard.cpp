@@ -59,4 +59,6 @@ void PointCard::Print() const
     {
         std::cout << "No image data";
     }
+
+    std::cout << "\n";
 }

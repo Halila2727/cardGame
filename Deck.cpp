@@ -32,7 +32,7 @@ CardType&& Deck<CardType>::Draw()
     }
     else
     {
-        CardType card = std::move(cards_.back());
+        CardType card = cards_.back();
         cards_.pop_back();
         return std::move(card);
     }
