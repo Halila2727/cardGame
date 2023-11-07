@@ -1,7 +1,7 @@
 #include "Deck.hpp"
 
 template <typename CardType>
-Deck<CardType>::Deck()
+Deck<ActionCard>::Deck()
 {
 
 }
@@ -57,6 +57,3 @@ std::vector<CardType> Deck<CardType>::getDeck() const
 {
     return cards_;
 }
-
-template class Deck<PointCard>;
-template class Deck<ActionCard>;

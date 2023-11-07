@@ -24,7 +24,7 @@ PointCard::PointCard() : Card()
 
 bool PointCard::isPlayable()
 {
-    if(getDrawn() == false)
+    if(getDrawn() == false || getInstruction().size() > 2)
     {
         return false;
     }
@@ -35,18 +35,14 @@ bool PointCard::isPlayable()
     // {
     //     return false;
     // }
-    try
+    if(isNumber(getInstruction()) == false)
     {
-        int number = std::stoi(getInstruction());
-        return number >= 1 && number <= 99;
-    } 
-    catch (const std::invalid_argument&)
+        return false;
+    }
+
+    if(std::stoi(getInstruction()) < 1 || std::stoi(getInstruction()) > 99)
     {
-        return false; // Invalid number format
-    } 
-    catch (const std::out_of_range&)
-    {
-        return false; // Out of range integer
+        return false;
     }
     
     return true;
