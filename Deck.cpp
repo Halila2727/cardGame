@@ -5,42 +5,61 @@
 #include <random>
 #include "Deck.hpp"
 
-Deck::Deck()
+template <typename CardType>
+Deck<CardType>::Deck()
 {
 
 }
 
-Deck::~Deck()
+template <typename CardType>
+Deck<CardType>::~Deck()
 {
 
 }
 
-void Deck::AddCard(const CardType& card)
+template <typename CardType>
+void Deck<CardType>::AddCard(const CardType& card)
 {
-
+    cards_.push_back(card);
 }
 
-CardType&& Deck::Draw()
+template <typename CardType>
+CardType&& Deck<CardType>::Draw()
 {
-
+    if(IsEmpty() == true)
+    {
+        throw std::out_of_range("Cannot draw, deck is empty.");
+    }
+    else
+    {
+        CardType card = std::move(cards_.back());
+        cards_.pop_back();
+        return std::move(card);
+    }
 }
 
-bool Deck::IsEmpty() const
+template <typename CardType>
+bool Deck<CardType>::IsEmpty() const
 {
-
+    return cards_.empty();
 }
 
-void Deck::Shuffle()
+template <typename CardType>
+void Deck<CardType>::Shuffle()
 {
-
+    std::random_device rd;
+    std::mt19937 rng(rd());
+    std::shuffle(cards_.begin(), cards_.end(), rng);
 }
 
-int Deck::getSize() const
+template <typename CardType>
+int Deck<CardType>::getSize() const
 {
-
+    return cards_.size();
 }
 
-std::vector<CardType> Deck::getDeck() const
+template <typename CardType>
+std::vector<CardType> Deck<CardType>::getDeck() const
 {
-
+    return cards_;
 }
