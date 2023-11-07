@@ -2,7 +2,7 @@
 #include "Card.hpp"
 #include "ActionCard.hpp"
 #include "PointCard.hpp"
-//#include "Deck.hpp"
+#include "Deck.hpp"
 //#include "Hand.hpp"
 //#include "Player.hpp"
 
@@ -94,13 +94,20 @@ int main()
     assert(po8.isPlayable() == false);
 
     // Test Deck class
-    // Deck<ActionCard> actionDeck;
-    // ActionCard actionCard1;
-    // actionCard1.setInstruction("DRAW 2 CARDS");
-    // actionDeck.AddCard(actionCard1);
-    // assert(!actionDeck.IsEmpty());
-    // ActionCard drawnActionCard = actionDeck.Draw();
-    // assert(drawnActionCard.getInstruction() == "DRAW 2 CARDS");
+    Deck<ActionCard> actionDeck;
+    assert(actionDeck.IsEmpty() == true);
+    //ActionCard drawnActionCard = actionDeck.Draw();
+
+    actionDeck.AddCard(act1);
+    actionDeck.AddCard(act2);
+    assert(!actionDeck.IsEmpty());
+
+    act5.setDrawn(true);
+    actionDeck.AddCard(act5);
+    assert(act5.isPlayable() == true);
+
+    ActionCard drawnActionCard = actionDeck.Draw();
+    assert(drawnActionCard.getInstruction() == "PLAY 5 CARDS");
 
     // // Test Hand class
     // Hand hand;
