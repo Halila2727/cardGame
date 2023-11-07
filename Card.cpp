@@ -9,14 +9,6 @@ Card::~Card()
 
 Card::Card(const Card& rhs)
 {
-    if (rhs.bitmap_ != nullptr)
-    {
-        *bitmap_ = 80;
-    }
-    else
-    {
-        bitmap_ = nullptr;
-    }
     cardType_ = rhs.cardType_;
     instruction_ = rhs.instruction_;
     drawn_ = rhs.drawn_;
@@ -26,7 +18,6 @@ Card& Card::operator=(const Card& rhs)
 {
     if( this != &rhs )
     {
-        *bitmap_ = 80;
         cardType_ = rhs.cardType_;
         instruction_ = rhs.instruction_;
         drawn_ = rhs.drawn_;
@@ -39,10 +30,6 @@ Card::Card(Card&& rhs)
     cardType_ = std::move(rhs.cardType_);
 
     instruction_ = std::move(rhs.instruction_);
-    rhs.instruction_.clear();
-
-    *bitmap_ = 80;
-    rhs.bitmap_ = nullptr;
 
     drawn_ = std::move(rhs.drawn_);
 }

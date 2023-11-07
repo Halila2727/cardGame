@@ -12,18 +12,23 @@ ActionCard::ActionCard() : Card()
 
 bool ActionCard::isPlayable()
 {
-    if(getDrawn() == false)
+    if(getDrawn() == false || getInstruction().size() < 11)
     {
         return false;
     }
-    
-    if(getInstruction().substr(0, 1) != "D" || getInstruction().substr(0, 4) != "P" 
-    || getInstruction().substr(0, 4) != "R" || getInstruction().substr(0, 4) != "S")
+
+
+    if (getInstruction() == "REVERSE HAND" || getInstruction() == "SWAP HAND WITH OPPONENT")
     {
-        return false;
+        return true;
     }
     
-    return true;
+    if (getInstruction().substr(0, 4) == "DRAW" || getInstruction().substr(0,4) == "PLAY")
+    {
+        return true;
+    }
+
+    return false;
 }
 
 void ActionCard::Print() const

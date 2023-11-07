@@ -70,5 +70,4 @@ class Deck
         std::vector<CardType> cards_;
 };
 
-#include "Deck.cpp"
 #endif

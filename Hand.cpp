@@ -10,7 +10,7 @@ Hand::Hand()
 // Destructor
 Hand::~Hand()
 {
-
+    
 }
 
 // Copy Constructor
