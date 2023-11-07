@@ -11,11 +11,7 @@ Card::Card(const Card& rhs)
 {
     if (rhs.bitmap_ != nullptr)
     {
-        bitmap_ = new int[sizeof(rhs.bitmap_)];
-        for (int i = 0; i < sizeof(rhs.bitmap_); ++i)
-        {
-            bitmap_[i] = rhs.bitmap_[i];
-        }
+        *bitmap_ = 80;
     }
     else
     {
@@ -30,7 +26,7 @@ Card& Card::operator=(const Card& rhs)
 {
     if( this != &rhs )
     {
-        *bitmap_ = *rhs.bitmap_;
+        *bitmap_ = 80;
         cardType_ = rhs.cardType_;
         instruction_ = rhs.instruction_;
         drawn_ = rhs.drawn_;
@@ -40,11 +36,15 @@ Card& Card::operator=(const Card& rhs)
 
 Card::Card(Card&& rhs)
 {
-    cardType_ = rhs.cardType_;
+    cardType_ = std::move(rhs.cardType_);
+
     instruction_ = std::move(rhs.instruction_);
-    bitmap_ = rhs.bitmap_;
+    rhs.instruction_.clear();
+
+    *bitmap_ = 80;
     rhs.bitmap_ = nullptr;
-    drawn_ = rhs.drawn_;
+
+    drawn_ = std::move(rhs.drawn_);
 }
 
 Card& Card::operator=(Card&& rhs)
@@ -54,20 +54,19 @@ Card& Card::operator=(Card&& rhs)
         return *this;
     }
 
-    cardType_ = rhs.cardType_;
+    cardType_ = std::move(rhs.cardType_);
     instruction_ = std::move(rhs.instruction_);
+
     if (bitmap_ != nullptr)
     {
         delete[] bitmap_;
     }
-    bitmap_ = rhs.bitmap_;
+    *bitmap_ = 80;
     rhs.bitmap_ = nullptr;
-    drawn_ = rhs.drawn_;
+
+    drawn_ = std::move(rhs.drawn_);
+    
     return *this;
-    // std::swap( instruction_, rhs.instruction_ );
-    // std::swap( bitmap_, rhs.bitmap_ );
-    // std::swap( cardType_, rhs.cardType_ );
-    // std::swap( drawn_, rhs.drawn_ );
     // return *this;
 }
 

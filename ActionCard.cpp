@@ -17,8 +17,8 @@ bool ActionCard::isPlayable()
         return false;
     }
     
-    if(getInstruction().substr(0, 4) != "DRAW" || getInstruction().substr(0, 4) != "PLAY" 
-    || getInstruction().substr(0, 4) != "REVE" || getInstruction().substr(0, 4) != "SWAP")
+    if(getInstruction().substr(0, 1) != "D" || getInstruction().substr(0, 4) != "P" 
+    || getInstruction().substr(0, 4) != "R" || getInstruction().substr(0, 4) != "S")
     {
         return false;
     }

@@ -29,14 +29,9 @@ bool PointCard::isPlayable()
         return false;
     }
     
-    const std::string& instruction = getInstruction();
-    for (char c : instruction)
-    {
-        if (!isdigit(c))
-        {
-            return false;
-        }
-    }
+    if(getInstruction().substr(0, 1) == "0" || getInstruction().substr(0, 1) == "1" || getInstruction().substr(0, 1) == "2" || getInstruction().substr(0, 1) == "3" 
+    || getInstruction().substr(0, 1) == "4" || getInstruction().substr(0, 1) == "5" || getInstruction().substr(0, 1) == "6" || getInstruction().substr(0, 1) == "7" 
+    || getInstruction().substr(0, 1) == "8" || getInstruction().substr(0, 1) == "9" )
     
     return true;
 }
