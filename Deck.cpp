@@ -63,3 +63,6 @@ std::vector<CardType> Deck<CardType>::getDeck() const
 {
     return cards_;
 }
+
+template class Deck<PointCard>;
+template class Deck<ActionCard>;
