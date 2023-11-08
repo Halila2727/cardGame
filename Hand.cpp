@@ -4,18 +4,22 @@
 // Constructor
 Hand::Hand()
 {
-    cards_;
+    cards_.clear();
 }
 
 // Destructor
 Hand::~Hand()
 {
+    while (this->cards_.size() > 0)
+    {
+        this->cards_.pop_back();
+    }
 }
 
 // Copy Constructor
 Hand::Hand(const Hand& other)
 {
-    cards_ = other.cards_;
+    this->cards_ = other.cards_;
 }
 
 // Copy Assignment Operator
@@ -23,7 +27,7 @@ Hand& Hand::operator=(const Hand& other)
 {
     if (this != &other)
     {
-        cards_ = other.cards_;
+        this->cards_ = other.cards_;
     }
 
     return *this;
@@ -32,7 +36,7 @@ Hand& Hand::operator=(const Hand& other)
 // Move Constructor
 Hand::Hand(Hand&& other)
 {
-    cards_ = std::move(other.cards_);
+    this->cards_ = std::move(other.cards_);
 }
 
 // Move Assignment Operator
@@ -40,7 +44,7 @@ Hand& Hand::operator=(Hand&& other)
 {
     if (this != &other)
     {
-        cards_ = std::move(other.cards_);
+        this->cards_ = std::move(other.cards_);
     }
     return *this;
 }
@@ -48,19 +52,20 @@ Hand& Hand::operator=(Hand&& other)
 // Get the cards in the hand
 const std::deque<PointCard>& Hand::getCards() const 
 {
-    return cards_;
+    return this->cards_;
 }
 
 // Add a card to the hand
 void Hand::addCard(PointCard&& card)
 {
-    cards_.push_back(std::move(card));
+    card.setDrawn(true);
+    this->cards_.push_back(std::move(card));
 }
 
 // Check if the hand is empty
 bool Hand::isEmpty() const
 {
-    if(cards_.empty() == true)
+    if(this->cards_.empty() == true)
     {
         return true;
     }
@@ -71,23 +76,23 @@ bool Hand::isEmpty() const
 void Hand::Reverse()
 {
     std::deque<PointCard> reversedCards;
-    while (!cards_.empty())
+    while (this->cards_.empty() == false)
     {
-        reversedCards.push_back(std::move(cards_.back()));
-        cards_.pop_back();
+        reversedCards.push_back(std::move(this->cards_.back()));
+        this->cards_.pop_back();
     }
-    cards_ = std::move(reversedCards);
+    this->cards_ = std::move(reversedCards);
 }
 
 // Play the card at the front of the hand, removing it from the hand
 int Hand::PlayCard()
 {
-    if (isEmpty() == true)
+    if (this->isEmpty() == true)
     {
         throw std::out_of_range("Hand is empty, cannot play a card.");
     }
 
-    PointCard card = std::move(cards_.front());
+    PointCard card = std::move(this->cards_.front());
     cards_.pop_front();
 
     if (card.isPlayable() == false)

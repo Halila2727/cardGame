@@ -9,6 +9,7 @@
 int main()
 {
     //Test ActionCard class
+    std::cout << "----ACTION CARD----\n\n";
     ActionCard act1;
     act1.setInstruction("SWAP HAND WITH OPPONENT");
     act1.setDrawn(true);
@@ -50,6 +51,7 @@ int main()
     assert(act7.isPlayable() == false);
 
     // Test PointCard class
+    std::cout << "\n\n----POINT CARD----\n\n";
     PointCard po1;
     po1.setInstruction("10");
     po1.setDrawn(true);
@@ -94,6 +96,8 @@ int main()
     assert(po8.isPlayable() == false);
 
     // Test Deck class
+    std::cout << "\n\n----DECK----\n\n";
+
     Deck<ActionCard> actionDeck;
     assert(actionDeck.IsEmpty() == true);
     //ActionCard drawnActionCard = actionDeck.Draw();
@@ -106,27 +110,61 @@ int main()
 
     ActionCard drawnActionCard = actionDeck.Draw();
     assert(drawnActionCard.getInstruction() == "DRAW 4 CARDS");
-    std::cout << "a";
     drawnActionCard = actionDeck.Draw();
-    std::cout << "a";
     assert(drawnActionCard.getInstruction() == "PLAY 5 CARDS");
-    std::cout << "a";
     // drawnActionCard = actionDeck.Draw();
     // assert(drawnActionCard.getInstruction() == "PLAY 5 CARDS");
 
     // Test Hand class
+    std::cout << "\n\n----HAND----\n\n";
     Hand hand;
-    //assert(hand.isEmpty() == true);
+    assert(hand.isEmpty() == true);
 
     PointCard pointCard2;
     pointCard2.setInstruction("5");
     pointCard2.setDrawn(true);
 
-    //hand.addCard(std::move(pointCard2));
-    //assert(hand.isEmpty() == false);
+    hand.addCard(std::move(pointCard2));
+    assert(hand.isEmpty() == false);
 
-    //int points = hand.PlayCard();
-    //assert(points == 5);
+    int points = hand.PlayCard();
+    assert(points == 5);
+    assert(hand.isEmpty() == true);
+
+    Deck<PointCard> pointDeck;
+    pointDeck.AddCard(po4);
+    pointDeck.AddCard(po7);
+    pointDeck.AddCard(po3);
+
+    hand.addCard(pointDeck.Draw());
+    hand.addCard(pointDeck.Draw());
+    hand.addCard(pointDeck.Draw());
+
+    points += hand.PlayCard();
+    std::cout << "Number of points: " << points<< "\n";
+    assert(points == 15);
+    points += hand.PlayCard();
+    assert(points == 16);
+    points += hand.PlayCard();
+    assert(points == 114);
+
+    pointDeck.AddCard(po4);
+    pointDeck.AddCard(po7);
+    pointDeck.AddCard(po3);
+
+    hand.addCard(pointDeck.Draw());
+    hand.addCard(pointDeck.Draw());
+    hand.addCard(pointDeck.Draw());
+
+    hand.Reverse();
+    points += hand.PlayCard();
+    assert(points == 212);
+    points += hand.PlayCard();
+    assert(points == 213);
+    points += hand.PlayCard();
+    assert(points == 223);
+    
+
 
     // // Test Player class
     // Player player;
