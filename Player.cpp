@@ -7,6 +7,7 @@ Player::Player()
     opponent_ = nullptr;
     actiondeck_ = nullptr;
     pointdeck_ = nullptr;
+    hand_ = Hand();
 }
 
 // Destructor
@@ -26,7 +27,7 @@ const Hand& Player::getHand() const
 // Set the player's hand
 void Player::setHand(const Hand& hand)
 {
-    hand_ = Hand(hand);
+    this->hand_ = hand;
 }
 
 // Get the player's score
@@ -38,22 +39,53 @@ int Player::getScore() const
 // Set the player's score
 void Player::setScore(const int& score)
 {
-    score_ = score;
+    this->score_ = score;
 }
 
 // Play an action card
 void Player::play(ActionCard&& card)
 {
-    std::cout << "PLAYING ACTION CARD: " << card.getInstruction() << "\n";
+    std::string instruction = card.getInstruction();
+    std::cout << "PLAYING ACTION CARD: " << instruction << "\n";
+
+    //splitting the instruction into a vector
+    std::vector<std::string> word_list;
+    std::string word;
+    std::stringstream stringstream(instruction);
+
+    while(std::getline(stringstream, word, ' ')){
+        word_list.push_back(word);
+    }
     
-    
+    //Checking the different instruction of ActionCard
+    if(word_list[0] == "PLAY"){
+        for(int i = 0; i < std::stoi(word_list[1]); i++){
+            this->playPointCard();
+        }
+    }else if(word_list[0] == "DRAW"){
+        for(int i = 0; i < std::stoi(word_list[1]); i++){
+            this->drawPointCard();
+        }            
+    }else if(word_list[0] == "REVERSE"){
+        this->hand_.Reverse();
+
+    }else if(word_list[0] == "SWAP"){
+        if(this->opponent_ != nullptr){
+            std::swap(this->hand_, this->opponent_->hand_);
+        }
+        
+    }
 }
 
 // Draw a point card and place it in the player's hand
 void Player::drawPointCard()
 {
-    PointCard pointCard = pointdeck_->Draw();
-    hand_.addCard(std::move(pointCard));
+    if((this->hand_.isEmpty()) == true)
+    {} //do nothing
+    else
+    {
+        this->score_ += this->hand_.PlayCard();
+    }
 }
 
 // Play a point card from the player's hand and update the player's score
@@ -71,10 +103,10 @@ void Player::setOpponent(Player* opponent)
 {
     if (opponent != nullptr)
     {
-        opponent_ = new Player[sizeof(opponent)];
+        this->opponent_ = new Player[sizeof(opponent)];
         for (int i = 0; i < sizeof(opponent); ++i)
         {
-            opponent_[i] = opponent[i];
+            this->opponent_[i] = opponent[i];
         }
     } 
     else
@@ -94,10 +126,10 @@ void Player::setActionDeck(Deck<ActionCard>* actiondeck)
 {
     if (actiondeck != nullptr)
     {
-        actiondeck_ = new Deck<ActionCard>[sizeof(actiondeck)];
+        this->actiondeck_ = new Deck<ActionCard>[sizeof(actiondeck)];
         for (int i = 0; i < sizeof(actiondeck); ++i)
         {
-            actiondeck_[i] = actiondeck[i];
+            this->actiondeck_[i] = actiondeck[i];
         }
     } 
     else
@@ -117,10 +149,10 @@ void Player::setPointDeck(Deck<PointCard>* pointdeck)
 {
     if (pointdeck != nullptr)
     {
-        pointdeck_ = new Deck<PointCard>[sizeof(pointdeck)];
+        this->pointdeck_ = new Deck<PointCard>[sizeof(pointdeck)];
         for (int i = 0; i < sizeof(pointdeck); ++i)
         {
-            pointdeck_[i] = pointdeck[i];
+            this->pointdeck_[i] = pointdeck[i];
         }
     } 
     else

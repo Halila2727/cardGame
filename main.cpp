@@ -4,7 +4,7 @@
 #include "PointCard.hpp"
 #include "Deck.hpp"
 #include "Hand.hpp"
-//#include "Player.hpp"
+#include "Player.hpp"
 
 int main()
 {
