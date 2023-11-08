@@ -4,13 +4,12 @@
 // Constructor
 Hand::Hand()
 {
-
+    cards_;
 }
 
 // Destructor
 Hand::~Hand()
 {
-    
 }
 
 // Copy Constructor
@@ -61,7 +60,11 @@ void Hand::addCard(PointCard&& card)
 // Check if the hand is empty
 bool Hand::isEmpty() const
 {
-    return cards_.empty();
+    if(cards_.empty() == true)
+    {
+        return true;
+    }
+    return false;
 }
 
 // Reverse the hand

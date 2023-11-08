@@ -77,13 +77,16 @@ class Deck
 template <typename CardType>
 Deck<CardType>::Deck()
 {
-    cards_;
+    cards_.clear();
 }
 
 template <typename CardType>
 Deck<CardType>::~Deck()
 {
-
+    while (this->cards_.size() > 0)
+    {
+        this->cards_.pop_back();
+    }
 }
 
 template <typename CardType>
@@ -97,10 +100,12 @@ CardType&& Deck<CardType>::Draw()
 {
     if(IsEmpty() == true)
     {
-        throw std::runtime_error("Cannot draw, deck is empty.");
+        throw std::out_of_range("Cannot draw, deck is empty.");
     }
     else
     {
+        cards_.back().setDrawn(true);
+
         CardType&& card = std::move(cards_.back());
         cards_.pop_back();
         return std::move(card);
@@ -110,7 +115,7 @@ CardType&& Deck<CardType>::Draw()
 template <typename CardType>
 bool Deck<CardType>::IsEmpty() const
 {
-    return cards_.empty();
+    return (cards_.size() == 0);
 }
 
 template <typename CardType>
@@ -123,7 +128,7 @@ void Deck<CardType>::Shuffle()
 template <typename CardType>
 int Deck<CardType>::getSize() const
 {
-    return cards_.size();
+    return this->cards_.size();
 }
 
 template <typename CardType>

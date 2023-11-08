@@ -3,7 +3,7 @@
 #include "ActionCard.hpp"
 #include "PointCard.hpp"
 #include "Deck.hpp"
-//#include "Hand.hpp"
+#include "Hand.hpp"
 //#include "Player.hpp"
 
 int main()
@@ -98,26 +98,35 @@ int main()
     assert(actionDeck.IsEmpty() == true);
     //ActionCard drawnActionCard = actionDeck.Draw();
 
-    actionDeck.AddCard(act1);
-    actionDeck.AddCard(act2);
-    assert(!actionDeck.IsEmpty());
-
-    act5.setDrawn(true);
     actionDeck.AddCard(act5);
-    assert(act5.isPlayable() == true);
+    assert(actionDeck.IsEmpty() == false);
+
+    actionDeck.AddCard(act6);
+    actionDeck.AddCard(act4);
 
     ActionCard drawnActionCard = actionDeck.Draw();
+    assert(drawnActionCard.getInstruction() == "DRAW 4 CARDS");
+    std::cout << "a";
+    drawnActionCard = actionDeck.Draw();
+    std::cout << "a";
     assert(drawnActionCard.getInstruction() == "PLAY 5 CARDS");
+    std::cout << "a";
+    // drawnActionCard = actionDeck.Draw();
+    // assert(drawnActionCard.getInstruction() == "PLAY 5 CARDS");
 
-    // // Test Hand class
-    // Hand hand;
-    // assert(hand.isEmpty() == true);
-    // PointCard pointCard2;
-    // pointCard2.setInstruction("5");
-    // hand.addCard(std::move(pointCard2));
-    // assert(!hand.isEmpty());
-    // int points = hand.PlayCard();
-    // assert(points == 5);
+    // Test Hand class
+    Hand hand;
+    //assert(hand.isEmpty() == true);
+
+    PointCard pointCard2;
+    pointCard2.setInstruction("5");
+    pointCard2.setDrawn(true);
+
+    //hand.addCard(std::move(pointCard2));
+    //assert(hand.isEmpty() == false);
+
+    //int points = hand.PlayCard();
+    //assert(points == 5);
 
     // // Test Player class
     // Player player;

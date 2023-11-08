@@ -4,6 +4,7 @@
 
 Card::~Card()
 {
+    delete[] this->bitmap_;
 }
 
 Card::Card(const Card& rhs)
@@ -18,7 +19,6 @@ Card& Card::operator=(const Card& rhs)
 {
     if( this != &rhs )
     {
-        bitmap_ = rhs.bitmap_;
         cardType_ = rhs.cardType_;
         instruction_ = rhs.instruction_;
         drawn_ = rhs.drawn_;
@@ -41,25 +41,32 @@ Card& Card::operator=(const Card& rhs)
 Card::Card(Card&& rhs)
 {
     cardType_ = std::move(rhs.cardType_);
-
     instruction_ = std::move(rhs.instruction_);
-
     drawn_ = std::move(rhs.drawn_);
+    bitmap_ = std::move(rhs.bitmap_);
+
+    rhs.instruction_ = "";
 }
 
 Card& Card::operator=(Card&& rhs)
 {
-    if (this == &rhs)
-    {
-        return *this;
-    }
+    // if (this == &rhs)
+    // {
+    //     return *this;
+    // }
+
+    // cardType_ = std::move(rhs.cardType_);
+    // instruction_ = std::move(rhs.instruction_);
+    // rhs.instruction_ = "";
+
+    // setImageData(std::move(rhs.bitmap_));
+    // rhs.bitmap_ = nullptr;
+
+    // drawn_ = std::move(rhs.drawn_);
 
     cardType_ = std::move(rhs.cardType_);
     instruction_ = std::move(rhs.instruction_);
-
-    setImageData(std::move(rhs.bitmap_));
-    rhs.bitmap_ = nullptr;
-
+    bitmap_ = std::move(rhs.bitmap_);
     drawn_ = std::move(rhs.drawn_);
     
     return *this;
@@ -70,6 +77,7 @@ Card::Card()
 {
     instruction_ = "";
     drawn_ = false;
+    bitmap_ = nullptr;
 }
 
 std::string Card::getType() const
@@ -78,7 +86,11 @@ std::string Card::getType() const
     {
         return "POINT_CARD";
     }
-    return "ACTION_CARD";
+    else if(cardType_ == ACTION_CARD)
+    {
+        return "ACTION_CARD";
+    }
+    return "";
 }
 
 void Card::setType(const CardType& type)
@@ -106,7 +118,8 @@ void Card::setImageData(int* data)
     if (data != nullptr)
     {
         bitmap_ = new int[sizeof(80)];
-        for (int i = 0; i < sizeof(80); ++i) {
+        for (int i = 0; i < sizeof(80); ++i)
+        {
             bitmap_[i] = data[i];
         }
     } 

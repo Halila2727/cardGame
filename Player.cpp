@@ -12,7 +12,9 @@ Player::Player()
 // Destructor
 Player::~Player()
 {
-
+    delete opponent_;
+    delete pointdeck_;
+    delete actiondeck_;
 }
 
 // Get the player's hand
@@ -24,7 +26,7 @@ const Hand& Player::getHand() const
 // Set the player's hand
 void Player::setHand(const Hand& hand)
 {
-    hand_ = hand;
+    hand_ = Hand(hand);
 }
 
 // Get the player's score
@@ -67,7 +69,18 @@ void Player::playPointCard()
 // Set the opponent of the player
 void Player::setOpponent(Player* opponent)
 {
-    opponent_ = opponent;
+    if (opponent != nullptr)
+    {
+        opponent_ = new Player[sizeof(opponent)];
+        for (int i = 0; i < sizeof(opponent); ++i)
+        {
+            opponent_[i] = opponent[i];
+        }
+    } 
+    else
+    {
+        opponent_ = nullptr;
+    }
 }
 
 // Get a pointer to the player's opponent
@@ -79,7 +92,18 @@ Player* Player::getOpponent()
 // Set the action deck of the player
 void Player::setActionDeck(Deck<ActionCard>* actiondeck)
 {
-    actiondeck_ = actiondeck;
+    if (actiondeck != nullptr)
+    {
+        actiondeck_ = new Deck<ActionCard>[sizeof(actiondeck)];
+        for (int i = 0; i < sizeof(actiondeck); ++i)
+        {
+            actiondeck_[i] = actiondeck[i];
+        }
+    } 
+    else
+    {
+        actiondeck_ = nullptr;
+    }
 }
 
 // Get a pointer to the player's action deck
@@ -91,7 +115,18 @@ Deck<ActionCard>* Player::getActionDeck()
 // Set the point deck of the player
 void Player::setPointDeck(Deck<PointCard>* pointdeck)
 {
-    pointdeck_ = pointdeck;
+    if (pointdeck != nullptr)
+    {
+        pointdeck_ = new Deck<PointCard>[sizeof(pointdeck)];
+        for (int i = 0; i < sizeof(pointdeck); ++i)
+        {
+            pointdeck_[i] = pointdeck[i];
+        }
+    } 
+    else
+    {
+        pointdeck_ = nullptr;
+    }
 }
 
 // Get a pointer to the player's point deck
