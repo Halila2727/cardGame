@@ -2,11 +2,13 @@
 #include <string>
 #include "Card.hpp"
 
+//Destructor for Card
 Card::~Card()
 {
     delete[] this->bitmap_;
 }
 
+//Copy Constructor for Card
 Card::Card(const Card& rhs)
 {
     setImageData(rhs.bitmap_);
@@ -15,6 +17,7 @@ Card::Card(const Card& rhs)
     drawn_ = rhs.drawn_;
 }
 
+//Copy Assignment Operator for Card
 Card& Card::operator=(const Card& rhs)
 {
     if( this != &rhs )
@@ -38,6 +41,7 @@ Card& Card::operator=(const Card& rhs)
     return *this;
 }
 
+//Move Constructor for Card
 Card::Card(Card&& rhs)
 {
     cardType_ = std::move(rhs.cardType_);
@@ -48,6 +52,7 @@ Card::Card(Card&& rhs)
     rhs.instruction_ = "";
 }
 
+//Move Assignment Operator for Card
 Card& Card::operator=(Card&& rhs)
 {
     // if (this == &rhs)
@@ -73,6 +78,7 @@ Card& Card::operator=(Card&& rhs)
     // return *this;
 }
 
+//Default Constructor for Card
 Card::Card()
 {
     instruction_ = "";
@@ -80,6 +86,7 @@ Card::Card()
     bitmap_ = nullptr;
 }
 
+//Returns the corresponding string to the cardType_ of Card
 std::string Card::getType() const
 {
     if(cardType_ == POINT_CARD)
@@ -93,26 +100,31 @@ std::string Card::getType() const
     return "";
 }
 
+//Sets cardType_ with type
 void Card::setType(const CardType& type)
 {
     cardType_ = type;
 }
 
+//Returns the instruction_ of Card
 const std::string& Card::getInstruction() const
 {
     return instruction_;
 }
 
+//Sets instruction_ with instruction
 void Card::setInstruction(const std::string& instruction)
 {
     instruction_ = instruction;
 }
 
+//Returns the bitmap_ of card
 const int* Card::getImageData() const
 {
     return bitmap_;
 }
 
+//Sets each value of bitmap_ with data, or else setting it nullptr as data is nullptr as well
 void Card::setImageData(int* data)
 {
     if (data != nullptr)
@@ -129,11 +141,13 @@ void Card::setImageData(int* data)
     }
 }
 
+//Returns the drawn_ of card
 bool Card::getDrawn() const
 {
     return drawn_;
 }
 
+//Sets drawn_ with drawn
 void Card::setDrawn(const bool& drawn)
 {
     drawn_ = drawn;

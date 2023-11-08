@@ -167,19 +167,16 @@ int main()
 
 
     // Test Player class
+    std::cout << "\n\n----PLAYER----\n\n";
     Player player;
     Player opponent;
-    std::cout << "a\n";
     player.setOpponent(&opponent);
-    std::cout << "a\n";
+    
     Deck<ActionCard> actionDeck2;
-    std::cout << "a\n";
     player.setActionDeck(&actionDeck2);
-    std::cout << "a\n";
+    
     Deck<PointCard> pointDeck2;
-    std::cout << "a\n";
     player.setPointDeck(&pointDeck2);
-    std::cout << "a\n";
 
     return 0;
 }

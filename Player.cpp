@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-// Constructor
+//Constructor for Player
 Player::Player()
 {
     score_ = 0;
@@ -10,7 +10,7 @@ Player::Player()
     hand_ = Hand();
 }
 
-// Destructor
+//Destructor for Hand
 Player::~Player()
 {
     delete opponent_;
@@ -18,31 +18,32 @@ Player::~Player()
     delete actiondeck_;
 }
 
-// Get the player's hand
+//Returns the Hand that the Player possesses
 const Hand& Player::getHand() const
 {
     return hand_;
 }
 
-// Set the player's hand
+//Sets the Player's hand_ as the given hand.
 void Player::setHand(const Hand& hand)
 {
     this->hand_ = hand;
 }
 
-// Get the player's score
+//Returns the PLayer's score_
 int Player::getScore() const
 {
     return score_;
 }
 
-// Set the player's score
+//Sets the player's score_ as score
 void Player::setScore(const int& score)
 {
     this->score_ = score;
 }
 
-// Play an action card
+//Plays an ActionCard by matching the instructions of the card to an action and performing
+//the given action
 void Player::play(ActionCard&& card)
 {
     std::cout << "PLAYING ACTION CARD: " << card.getInstruction() << "\n";
@@ -79,39 +80,48 @@ void Player::play(ActionCard&& card)
     std::regex playRegex(R"(PLAY (\d+) CARD\(S\))");
     std::regex reverseRegex("REVERSE HAND");
     std::regex swapRegex("SWAP HAND WITH OPPONENT");
+    std::smatch match;
 
     const std::string &instruction = card.getInstruction();
 
-    if (std::regex_match(instruction, drawRegex)) {
-        std::smatch match;
-        if (std::regex_search(instruction, match, drawRegex)) {
-        int num_cards_to_draw = std::stoi(match[1]);
-        for (int i = 0; i < num_cards_to_draw; ++i) {
-            drawPointCard();
+    if (std::regex_match(instruction, drawRegex))
+    {
+        if (std::regex_search(instruction, match, drawRegex))
+        {
+            int num = std::stoi(match[1]);
+            for (int i = 0; i < num; ++i)
+            {
+                drawPointCard();
+            }
         }
+    }
+    else if(std::regex_match(instruction, playRegex))
+    {
+        if (std::regex_search(instruction, match, playRegex))
+        {
+            int num = std::stoi(match[1]);
+            for (int i = 0; i < num; ++i)
+            {
+                playPointCard();
+            }
         }
-    } else if (std::regex_match(instruction, playRegex)) {
-        std::smatch match;
-        if (std::regex_search(instruction, match, playRegex)) {
-        int num_cards_to_play = std::stoi(match[1]);
-        for (int i = 0; i < num_cards_to_play; ++i) {
-            playPointCard();
-        }
-        }
-    } else if (std::regex_match(instruction, reverseRegex)) {
-        // Reverse the player's hand
+    }
+    else if(std::regex_match(instruction, reverseRegex))
+    {
         hand_.Reverse();
-
-    } else if (std::regex_match(instruction, swapRegex)) {
-        Hand temp = this->hand_;
-        this->hand_ = opponent_->hand_;
-        opponent_->hand_ = temp;
-    } else {
-        std::cout << "Unsupported action: " << instruction << std::endl;
+    }
+    else if(std::regex_match(instruction, swapRegex))
+    {
+        std::swap(this->hand_, opponent_->hand_);
+    }
+    else
+    {
+        std::cout << "This instruction is not a valid action" << std::endl;
     }
 }
 
-// Draw a point card and place it in the player's hand
+//Draws a PointCard and places it in the Player's hand_ unless pointdeck_ is empty
+//in which case, nothing happens
 void Player::drawPointCard()
 {
     if (pointdeck_ != nullptr) {
@@ -120,7 +130,8 @@ void Player::drawPointCard()
   }
 }
 
-// Play a point card from the player's hand and update the player's score
+//Plays a PointCard from the Player's hand_ and increases the Player's score_
+//unless hand_ is empty in which case, nothing happens
 void Player::playPointCard()
 {
     if((this->hand_.isEmpty()) == true)
@@ -131,37 +142,37 @@ void Player::playPointCard()
     }
 }
 
-// Set the opponent of the player
+//Sets the opponent_ as opponent
 void Player::setOpponent(Player* opponent)
 {
     this->opponent_ = opponent;
 }
 
-// Get a pointer to the player's opponent
+//Returns the opponent_
 Player* Player::getOpponent()
 {
     return opponent_;
 }
 
-// Set the action deck of the player
+//Sets the actiondeck_ as actiondeck
 void Player::setActionDeck(Deck<ActionCard>* actiondeck)
 {
     this->actiondeck_ = actiondeck;
 }
 
-// Get a pointer to the player's action deck
+//Returns the actiondeck_
 Deck<ActionCard>* Player::getActionDeck()
 {
     return actiondeck_;
 }
 
-// Set the point deck of the player
+//Sets the pointdeck_ as pointdeck
 void Player::setPointDeck(Deck<PointCard>* pointdeck)
 {
     this->pointdeck_ = pointdeck;
 }
 
-// Get a pointer to the player's point deck
+//Returns the pointdeck_
 Deck<PointCard>* Player::getPointDeck()
 {
     return pointdeck_;

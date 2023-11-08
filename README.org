@@ -1,0 +1,33 @@
+* Fall 2023 - Card Game
+
+* Last name: Akca
+
+* First name: Halil
+
+* GitHub username: Halila2727
+
+##Definitions:
+Player: contains a Hand of cards, and pointers to their opponent, a Point Deck, and an Action Deck.
+
+Deck: holds either Point Cards and Action Cards.
+
+Hand belonging to a player only contains point cards, and cards drawn first are scored first.
+Point Cards: number of points scored when a Player plays a Point Card from their hand.
+
+The only way for a Player to add or play a Point Card is through an Action Card Instruction.
+
+Action Cards contain the followinginstructions, where x is a positive integer
+DRAW x CARD(S)
+PLAY x CARD(S)
+REVERSE HAND
+SWAP HAND WITH OPPONENT
+
+##TASK:
+Provided with these files:
+Card.hpp, PointCard.hpp, ActionCard.hpp, Hand.hpp, Deck.hpp, Player.hpp
+
+Complete the following files:
+Card.hpp, Card,cpp, PointCard.hpp, PointCard.cpp, ActionCard.hpp, ActionCard.cpp, Hand.hpp,
+Hand.cpp, Deck.hpp, Deck.cpp, Player.hpp, Player.cpp
+
+

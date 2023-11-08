@@ -5,11 +5,13 @@
 #include "Card.hpp"
 #include "ActionCard.hpp"
 
+//Construct an ActionCard object
 ActionCard::ActionCard() : Card()
 {
     setType(ACTION_CARD);
 }
 
+//Determines if a card is playable and returns corresponding boolean value.
 bool ActionCard::isPlayable()
 {
     if(getDrawn() == false || getInstruction().size() < 11)
@@ -31,6 +33,7 @@ bool ActionCard::isPlayable()
     return false;
 }
 
+//Prints the information within a given ActionCard
 void ActionCard::Print() const
 {
     std::cout << "Type: " << getType() << std::endl;

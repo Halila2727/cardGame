@@ -5,6 +5,8 @@
 #include "Card.hpp"
 #include "PointCard.hpp"
 
+//helper function to determine if a given value is a number
+//unused after all
 template<typename T>
 bool isNumber(T x)
 {
@@ -17,11 +19,13 @@ bool isNumber(T x)
     else return false;
 }
 
+//Constructs a PointCard object
 PointCard::PointCard() : Card()
 {
     setType(POINT_CARD);
 }
 
+//Determines if a card is playable and returns corresponding boolean value.
 bool PointCard::isPlayable()
 {
     if(getDrawn() == false || getInstruction().size() > 2)
@@ -48,6 +52,7 @@ bool PointCard::isPlayable()
     return true;
 }
 
+//Prints the information within a given PointCard
 void PointCard::Print() const
 {
     std::cout << "Type: " << getType() << std::endl;
