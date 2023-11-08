@@ -8,6 +8,7 @@ Deck.hpp defines the Deck class.
 #ifndef DECK_HPP
 #define DECK_HPP
 
+
 #include <vector>
 #include <iostream>
 #include <algorithm>
@@ -22,30 +23,59 @@ class Deck
         /**
          * @post: Construct a new Deck object
          */
-        Deck();
+        Deck()
+        {
+            cards_.clear();
+        }
 
         /**
          * @post: Destroy the Deck object 
          */
-        ~Deck();
+        ~Deck()
+        {
+            while (this->cards_.size() > 0)
+            {
+                this->cards_.pop_back();
+            }
+        }
 
         /**
          * @post: Add a Card to the Deck
          * @param: const reference to CardType card
          */
-        void AddCard(const CardType& card);
+        void AddCard(const CardType& card)
+        {
+            cards_.push_back(card);
+        }
 
         /**
          * @post: Draw a card from the deck
          * @pre: the deck is not empty
          * @return the right hand value of type CardType 
          */
-        CardType&& Draw();
+        CardType&& Draw()
+        {
+            if(IsEmpty() == true)
+            {
+                throw std::out_of_range("Cannot draw, deck is empty.");
+            }
+            else
+            {
+                cards_.back().setDrawn(true);
+
+                CardType&& card = std::move(cards_.back());
+                cards_.pop_back();
+                return std::move(card);
+            }
+        }
 
         /**
          * @return if the deck is empty 
          */
-        bool IsEmpty() const;
+        bool IsEmpty() const
+        {
+            return (cards_.size() == 0);
+        }
 
         /**
          * @post: Shuffle the deck 
@@ -54,85 +84,31 @@ class Deck
          * https://en.cppreference.com/w/cpp/algorithm/random_shuffle
          * https://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine
          */
-        void Shuffle();
+        void Shuffle()
+        {
+            std::mt19937 seed(2028358904);
+            std::shuffle(cards_.begin(), cards_.end(), seed);
+        }
 
         /**
          * @return the size of the deck 
          */
-        int getSize() const;
+        int getSize() const
+        {
+            return this->cards_.size();
+        }
 
         /**
          * @return the vector of cards in the deck 
          */
-        std::vector<CardType> getDeck() const;
+        std::vector<CardType> getDeck() const
+        {
+            return cards_;
+        }
 
     private:
         std::vector<CardType> cards_;
 };
 
-#endif
-
 #include "Deck.cpp"
-
-template <typename CardType>
-Deck<CardType>::Deck()
-{
-    cards_.clear();
-}
-
-template <typename CardType>
-Deck<CardType>::~Deck()
-{
-    while (this->cards_.size() > 0)
-    {
-        this->cards_.pop_back();
-    }
-}
-
-template <typename CardType>
-void Deck<CardType>::AddCard(const CardType& card)
-{
-    cards_.push_back(card);
-}
-
-template <typename CardType>
-CardType&& Deck<CardType>::Draw()
-{
-    if(IsEmpty() == true)
-    {
-        throw std::out_of_range("Cannot draw, deck is empty.");
-    }
-    else
-    {
-        cards_.back().setDrawn(true);
-
-        CardType&& card = std::move(cards_.back());
-        cards_.pop_back();
-        return std::move(card);
-    }
-}
-
-template <typename CardType>
-bool Deck<CardType>::IsEmpty() const
-{
-    return (cards_.size() == 0);
-}
-
-template <typename CardType>
-void Deck<CardType>::Shuffle()
-{
-    std::mt19937 seed(2028358904);
-    std::shuffle(cards_.begin(), cards_.end(), seed);
-}
-
-template <typename CardType>
-int Deck<CardType>::getSize() const
-{
-    return this->cards_.size();
-}
-
-template <typename CardType>
-std::vector<CardType> Deck<CardType>::getDeck() const
-{
-    return cards_;
-}
+#endif

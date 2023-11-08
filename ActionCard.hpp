@@ -9,6 +9,7 @@ ActionCard.hpp defines the ActionCard class and inherits from the Card Class.
 #define ACTIONCARD_HPP
 
 #include <iostream>
+#include <vector>
 #include <string>
 #include <cctype>
 #include <regex>

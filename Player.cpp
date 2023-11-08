@@ -45,40 +45,83 @@ void Player::setScore(const int& score)
 // Play an action card
 void Player::play(ActionCard&& card)
 {
-    std::string instruction = card.getInstruction();
-    std::cout << "PLAYING ACTION CARD: " << instruction << "\n";
+    std::cout << "PLAYING ACTION CARD: " << card.getInstruction() << "\n";
 
-    //splitting the instruction into a vector
-    std::vector<std::string> word_list;
-    std::string word;
-    std::stringstream stringstream(instruction);
+    // //splitting the instruction into a vector
+    // std::vector<std::string> word_list;
+    // std::string word;
+    // std::stringstream stringstream(instruction);
 
-    while(std::getline(stringstream, word, ' ')){
-        word_list.push_back(word);
-    }
+    // while(std::getline(stringstream, word, ' ')){
+    //     word_list.push_back(word);
+    // }
     
-    //Checking the different instruction of ActionCard
-    if(word_list[0] == "PLAY"){
-        for(int i = 0; i < std::stoi(word_list[1]); i++){
-            this->playPointCard();
-        }
-    }else if(word_list[0] == "DRAW"){
-        for(int i = 0; i < std::stoi(word_list[1]); i++){
-            this->drawPointCard();
-        }            
-    }else if(word_list[0] == "REVERSE"){
-        this->hand_.Reverse();
+    // //Checking the different instruction of ActionCard
+    // if(word_list[0] == "PLAY"){
+    //     for(int i = 0; i < std::stoi(word_list[1]); i++){
+    //         this->playPointCard();
+    //     }
+    // }else if(word_list[0] == "DRAW"){
+    //     for(int i = 0; i < std::stoi(word_list[1]); i++){
+    //         this->drawPointCard();
+    //     }            
+    // }else if(word_list[0] == "REVERSE"){
+    //     this->hand_.Reverse();
 
-    }else if(word_list[0] == "SWAP"){
-        if(this->opponent_ != nullptr){
-            std::swap(this->hand_, this->opponent_->hand_);
-        }
+    // }else if(word_list[0] == "SWAP"){
+    //     if(this->opponent_ != nullptr){
+    //         std::swap(this->hand_, this->opponent_->hand_);
+    //     }
         
+    // }
+    // Define regular expressions
+    std::regex drawRegex(R"(DRAW (\d+) CARD\(S\))");
+    std::regex playRegex(R"(PLAY (\d+) CARD\(S\))");
+    std::regex reverseRegex("REVERSE HAND");
+    std::regex swapRegex("SWAP HAND WITH OPPONENT");
+
+    const std::string &instruction = card.getInstruction();
+
+    if (std::regex_match(instruction, drawRegex)) {
+        std::smatch match;
+        if (std::regex_search(instruction, match, drawRegex)) {
+        int num_cards_to_draw = std::stoi(match[1]);
+        for (int i = 0; i < num_cards_to_draw; ++i) {
+            drawPointCard();
+        }
+        }
+    } else if (std::regex_match(instruction, playRegex)) {
+        std::smatch match;
+        if (std::regex_search(instruction, match, playRegex)) {
+        int num_cards_to_play = std::stoi(match[1]);
+        for (int i = 0; i < num_cards_to_play; ++i) {
+            playPointCard();
+        }
+        }
+    } else if (std::regex_match(instruction, reverseRegex)) {
+        // Reverse the player's hand
+        hand_.Reverse();
+
+    } else if (std::regex_match(instruction, swapRegex)) {
+        Hand temp = this->hand_;
+        this->hand_ = opponent_->hand_;
+        opponent_->hand_ = temp;
+    } else {
+        std::cout << "Unsupported action: " << instruction << std::endl;
     }
 }
 
 // Draw a point card and place it in the player's hand
 void Player::drawPointCard()
+{
+    if (pointdeck_ != nullptr) {
+    PointCard card = pointdeck_->Draw();
+    hand_.addCard(std::move(card));
+  }
+}
+
+// Play a point card from the player's hand and update the player's score
+void Player::playPointCard()
 {
     if((this->hand_.isEmpty()) == true)
     {} //do nothing
@@ -88,31 +131,10 @@ void Player::drawPointCard()
     }
 }
 
-// Play a point card from the player's hand and update the player's score
-void Player::playPointCard()
-{
-    if (!hand_.isEmpty())
-    {
-        int points = hand_.PlayCard();
-        score_ += points;
-    }
-}
-
 // Set the opponent of the player
 void Player::setOpponent(Player* opponent)
 {
-    if (opponent != nullptr)
-    {
-        this->opponent_ = new Player[sizeof(opponent)];
-        for (int i = 0; i < sizeof(opponent); ++i)
-        {
-            this->opponent_[i] = opponent[i];
-        }
-    } 
-    else
-    {
-        opponent_ = nullptr;
-    }
+    this->opponent_ = opponent;
 }
 
 // Get a pointer to the player's opponent
@@ -124,18 +146,7 @@ Player* Player::getOpponent()
 // Set the action deck of the player
 void Player::setActionDeck(Deck<ActionCard>* actiondeck)
 {
-    if (actiondeck != nullptr)
-    {
-        this->actiondeck_ = new Deck<ActionCard>[sizeof(actiondeck)];
-        for (int i = 0; i < sizeof(actiondeck); ++i)
-        {
-            this->actiondeck_[i] = actiondeck[i];
-        }
-    } 
-    else
-    {
-        actiondeck_ = nullptr;
-    }
+    this->actiondeck_ = actiondeck;
 }
 
 // Get a pointer to the player's action deck
@@ -147,18 +158,7 @@ Deck<ActionCard>* Player::getActionDeck()
 // Set the point deck of the player
 void Player::setPointDeck(Deck<PointCard>* pointdeck)
 {
-    if (pointdeck != nullptr)
-    {
-        this->pointdeck_ = new Deck<PointCard>[sizeof(pointdeck)];
-        for (int i = 0; i < sizeof(pointdeck); ++i)
-        {
-            this->pointdeck_[i] = pointdeck[i];
-        }
-    } 
-    else
-    {
-        pointdeck_ = nullptr;
-    }
+    this->pointdeck_ = pointdeck;
 }
 
 // Get a pointer to the player's point deck

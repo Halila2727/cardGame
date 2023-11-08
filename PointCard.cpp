@@ -50,9 +50,9 @@ bool PointCard::isPlayable()
 
 void PointCard::Print() const
 {
-    std::cout << "Type: " << getType();
-    std::cout << "\nPoints: " << getInstruction();
-    std::cout << "\nCard: \n";
+    std::cout << "Type: " << getType() << std::endl;
+    std::cout << "Points: " << getInstruction() << std::endl;
+    std::cout << "Card: " << std::endl;
     
     const int* imageData = getImageData();
     if (imageData != nullptr)
@@ -67,5 +67,5 @@ void PointCard::Print() const
         std::cout << "No image data";
     }
 
-    std::cout << "\n";
+    std::cout << std::endl;
 }

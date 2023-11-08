@@ -33,9 +33,9 @@ bool ActionCard::isPlayable()
 
 void ActionCard::Print() const
 {
-    std::cout << "Type: " << getType();
-    std::cout << "\nInstruction: " << getInstruction();
-    std::cout << "\nCard: \n";
+    std::cout << "Type: " << getType() << std::endl;
+    std::cout << "Instruction: " << getInstruction() << std::endl;
+    std::cout << "Card: " << std::endl;
     
     const int* imageData = getImageData();
     if (imageData != nullptr)
@@ -50,5 +50,5 @@ void ActionCard::Print() const
         std::cout << "No image data";
     }
 
-    std::cout << "\n";
+    std::cout << std::endl;
 }

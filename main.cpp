@@ -166,14 +166,20 @@ int main()
     
 
 
-    // // Test Player class
-    // Player player;
-    // Player opponent;
-    // player.setOpponent(&opponent);
-    // Deck<ActionCard> actionDeck2;
-    // player.setActionDeck(&actionDeck2);
-    // Deck<PointCard> pointDeck;
-    // player.setPointDeck(&pointDeck);
+    // Test Player class
+    Player player;
+    Player opponent;
+    std::cout << "a\n";
+    player.setOpponent(&opponent);
+    std::cout << "a\n";
+    Deck<ActionCard> actionDeck2;
+    std::cout << "a\n";
+    player.setActionDeck(&actionDeck2);
+    std::cout << "a\n";
+    Deck<PointCard> pointDeck2;
+    std::cout << "a\n";
+    player.setPointDeck(&pointDeck2);
+    std::cout << "a\n";
 
     return 0;
 }
